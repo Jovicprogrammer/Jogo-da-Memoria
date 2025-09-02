@@ -144,15 +144,22 @@ export default function Home() {
   ]
 
   const [cartas, setCartas] = useState<Carta[]>(cartasiniciais)
+  const MAX_VIRADAS = 2
   // const [virado, setVirado] = useState(false)
 
   function VireaCarta(index: number) {
-    const listaAtualizada = cartas.map((item, i)=>{
-      
-        if(i == index) {
-            item.virado = !item.virado
-        }
-        return item
+     const cartasViradas = cartas.filter(carta => carta.virado).length
+    
+    // Se já tem 2 cartas viradas e esta não é uma delas, não faz nada
+    if (cartasViradas >= MAX_VIRADAS && !cartas[index].virado) {
+      return
+    }
+
+    const listaAtualizada = cartas.map((item, i) => {
+      if (i === index) {
+        return { ...item, virado: !item.virado }
+      }
+      return item
     })
 
     setCartas(listaAtualizada)
