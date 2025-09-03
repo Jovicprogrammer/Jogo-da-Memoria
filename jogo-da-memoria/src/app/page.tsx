@@ -181,9 +181,10 @@ export default function Home() {
 
   ]
 
-  
-
   const [cartas, setCartas] = useState<Carta[]>(() => shuffleArray(cartasiniciais))
+  const [pontuacao, setPontuacao] = useState(0)
+
+  
   // const [virado, setVirado] = useState(false)
 
 
@@ -214,7 +215,7 @@ export default function Home() {
           setCartas(listaAtualizada.map(carta => 
             carta.par === carta1.par 
               ? { ...carta, acertada: true, virado: true } 
-              : carta
+              : carta, setPontuacao(pontuacao + 1)
           ))
         }, 500)
       } else {
@@ -233,20 +234,26 @@ export default function Home() {
 
 
 return (
-    <div className="grid grid-cols-4 grid-rows-4 bg-green-800 ">
+    <div className="">
 
-    {cartas.map((carta, index) => (
+    <div className="absolute left-1 flex flex-col items-center -z-0 text-amber-950 bg-[#aba37b] m-5 p-6 rounded-2xl font-bold">
+      
+      <h2 className="font-extrabold text-[#ffff] ">Pontuação</h2>
 
-    <div className={`cursor-pointer`}
-
-    key={index} onClick={() => VireaCarta(index)}
-    >
-    <Image id="cartaimagem" src={carta.virado ? carta.src : '/cartas/backgrouuuuund.jpg'} alt='image' height={400} width={400} className={carta.acertada ? 'filter grayscale' : ''}></Image>
+      {pontuacao === 8 ? pontuacao + ' parabens bb!' : pontuacao}
     </div>
 
-    )
-    
-    )}
+    <div className="h-fit w-fit absolute top-3 left-90 -z-1 bg-amber-950 grid grid-cols-4 grid-rows-4 gap-0 p-0 m-0 ">
+      {cartas.map((carta, index) => (
+      <div className={`cursor-pointer p-0 m-0 overflow-hidden `}
+      key={index} onClick={() => VireaCarta(index)}
+      >
+      <Image id="cartaimagem" src={carta.virado ? carta.src : '/cartas/backgrouuuuund.jpg'} alt='image' height={145} width={145} className={` ${carta.acertada ? 'filter grayscale' : ''}`}></Image>
+      </div>
+      )
+      
+      )}
+    </div>
 
 
     </div>  
