@@ -6,7 +6,8 @@ import Image from "next/image"
     id: number,
     src: string,
     par: number,
-    virado: boolean
+    virado: boolean,
+    acertada: boolean
   }
 
 export default function Home() {
@@ -17,7 +18,8 @@ export default function Home() {
       id: 1,
       src: '/cartas/addison1.jpg',
       par: 1,
-      virado: false
+      virado: false,
+      acertada: false 
 
     },
 
@@ -25,7 +27,8 @@ export default function Home() {
       id: 2,
       src: '/cartas/addison2.jpg',
       par: 1,
-      virado: false
+      virado: false,
+      acertada: false 
 
     },
 
@@ -33,7 +36,8 @@ export default function Home() {
       id: 3, 
       src: '/cartas/carolinepolachek1.jpg',
       par: 2,
-      virado: false
+      virado: false,
+      acertada: false 
 
     },
 
@@ -41,7 +45,8 @@ export default function Home() {
       id: 4,
       src: '/cartas/carolinepolachek2.jpg',
       par: 2,
-      virado: false
+      virado: false,
+      acertada: false 
 
     },
 
@@ -49,7 +54,8 @@ export default function Home() {
       id: 5,
       src: '/cartas/joji1.jpg',
       par: 3,
-      virado: false
+      virado: false,
+      acertada: false 
 
     },
 
@@ -57,7 +63,8 @@ export default function Home() {
       id: 6,
       src: '/cartas/joji2.jpg',
       par: 3,
-      virado: false
+      virado: false,
+      acertada: false 
 
     },
 
@@ -65,7 +72,8 @@ export default function Home() {
       id: 7, 
       src: '/cartas/jvb1.jpg',
       par: 4,
-      virado: false
+      virado: false,
+      acertada: false 
 
     },
 
@@ -73,7 +81,8 @@ export default function Home() {
       id: 8,
       src: '/cartas/jvb2.jpg',
       par: 4,
-      virado: false
+      virado: false,
+      acertada: false 
 
     },
 
@@ -81,7 +90,8 @@ export default function Home() {
       id: 9,
       src: '/cartas/pinkpantheress1.jpg',
       par: 5,
-      virado: false
+      virado: false,
+      acertada: false 
 
     },
 
@@ -89,7 +99,8 @@ export default function Home() {
       id: 10,
       src: '/cartas/pinkpantheress2.jpg',
       par: 5,
-      virado: false
+      virado: false,
+      acertada: false 
 
     },
 
@@ -97,7 +108,8 @@ export default function Home() {
       id: 11,
       src: '/cartas/quadeca1.jpg',
       par: 6,
-      virado: false
+      virado: false,
+      acertada: false 
 
     },
 
@@ -105,7 +117,8 @@ export default function Home() {
       id: 12,
       src: '/cartas/quadeca2.jpg',
       par: 6,
-      virado: false
+      virado: false,
+      acertada: false 
 
     },
 
@@ -113,7 +126,8 @@ export default function Home() {
       id: 13,
       src: '/cartas/rosalia1.jpg',
       par: 7,
-      virado: false
+      virado: false,
+      acertada: false 
 
     },
 
@@ -121,7 +135,8 @@ export default function Home() {
       id: 14,
       src: '/cartas/rosalia2.jpg',
       par: 7,
-      virado: false
+      virado: false,
+      acertada: false 
 
     },
 
@@ -129,7 +144,8 @@ export default function Home() {
       id: 15,
       src: '/cartas/segabodega1.jpg',
       par: 8,
-      virado: false
+      virado: false,
+      acertada: false 
 
     },
 
@@ -137,21 +153,21 @@ export default function Home() {
       id: 16,
       src: '/cartas/segabodega2.jpg',
       par: 8,
-      virado: false
+      virado: false,
+      acertada: false 
 
     },
 
   ]
 
   const [cartas, setCartas] = useState<Carta[]>(cartasiniciais)
-  const MAX_VIRADAS = 2
   // const [virado, setVirado] = useState(false)
 
   function VireaCarta(index: number) {
-     const cartasViradas = cartas.filter(carta => carta.virado).length
-    
-    // Se já tem 2 cartas viradas e esta não é uma delas, não faz nada
-    if (cartasViradas >= MAX_VIRADAS && !cartas[index].virado) {
+    const cartaClicada = cartas[index]
+  
+ if (cartaClicada.acertada || 
+        (cartas.filter(c => c.virado && !c.acertada).length >= 2 && !cartaClicada.virado)) {
       return
     }
 
@@ -163,7 +179,33 @@ export default function Home() {
     })
 
     setCartas(listaAtualizada)
+
+     const novasViradas = listaAtualizada.filter(c => c.virado && !c.acertada)
+    if (novasViradas.length === 2) {
+      const [carta1, carta2] = novasViradas
+      
+      if (carta1.par === carta2.par) {
+        // Marca as cartas como acertadas
+        setTimeout(() => {
+          setCartas(listaAtualizada.map(carta => 
+            carta.par === carta1.par 
+              ? { ...carta, acertada: true, virado: true } 
+              : carta
+          ))
+        }, 500)
+      } else {
+        // Volta as cartas se não for par
+        setTimeout(() => {
+          setCartas(listaAtualizada.map(carta => 
+            carta.id === carta1.id || carta.id === carta2.id 
+              ? { ...carta, virado: false } 
+              : carta
+          ))
+        }, 1000)
+      }
+    }
   }
+
 
 
 return (
@@ -174,7 +216,7 @@ return (
 
     key={index} onClick={() => VireaCarta(index)}
     >
-    <Image src={carta.virado ? carta.src : '/cartas/backgrouuuuund.jpg'} alt='image' height={400} width={400} ></Image>
+    <Image id="cartaimagem" src={carta.virado ? carta.src : '/cartas/backgrouuuuund.jpg'} alt='image' height={400} width={400} className={carta.acertada ? 'filter grayscale' : ''}></Image>
     </div>
     )
     
@@ -185,3 +227,4 @@ return (
     
   );
 }
+
