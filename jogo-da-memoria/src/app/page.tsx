@@ -10,7 +10,28 @@ import Image from "next/image"
     acertada: boolean
   }
 
+  function shuffleArray<T>(array: T[]): T[] {
+  const shuffledArray = [...array];
+  let currentIndex = shuffledArray.length;
+  let randomIndex;
+
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    [shuffledArray[currentIndex], shuffledArray[randomIndex]] = [
+      shuffledArray[randomIndex],
+      shuffledArray[currentIndex],
+    ];
+  }
+
+  return shuffledArray;
+}
+
+
 export default function Home() {
+
+  
 
 
   const cartasiniciais: Carta[] = [
@@ -160,8 +181,11 @@ export default function Home() {
 
   ]
 
-  const [cartas, setCartas] = useState<Carta[]>(cartasiniciais)
+  
+
+  const [cartas, setCartas] = useState<Carta[]>(() => shuffleArray(cartasiniciais))
   // const [virado, setVirado] = useState(false)
+
 
   function VireaCarta(index: number) {
     const cartaClicada = cartas[index]
@@ -212,12 +236,14 @@ return (
     <div className="grid grid-cols-4 grid-rows-4 bg-green-800 ">
 
     {cartas.map((carta, index) => (
+
     <div className={`cursor-pointer`}
 
     key={index} onClick={() => VireaCarta(index)}
     >
     <Image id="cartaimagem" src={carta.virado ? carta.src : '/cartas/backgrouuuuund.jpg'} alt='image' height={400} width={400} className={carta.acertada ? 'filter grayscale' : ''}></Image>
     </div>
+
     )
     
     )}
