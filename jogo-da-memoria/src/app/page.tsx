@@ -1,5 +1,5 @@
 'use client'
-import { useState } from "react"
+import { useState, useEffect, useMemo } from "react"
 import Image from "next/image"
 
   interface Carta {
@@ -34,7 +34,7 @@ export default function Home() {
   
 
 
-  const cartasiniciais: Carta[] = [
+  const cartasiniciais = useMemo((): Carta[] => [
     {
       id: 1,
       src: '/cartas/addison1.jpg',
@@ -179,10 +179,24 @@ export default function Home() {
 
     },
 
-  ]
+   ], []) 
 
   const [cartas, setCartas] = useState<Carta[]>(() => shuffleArray(cartasiniciais))
   const [pontuacao, setPontuacao] = useState(0)
+  const [reiniciar, setReiniciar] = useState(false)
+
+  // useEffect para reiniciar o jogo
+  useEffect(() => {
+    if (reiniciar) {
+      setCartas(shuffleArray(cartasiniciais.map(carta => ({
+        ...carta,
+        virado: false,
+        acertada: false,
+      }), setPontuacao(0)
+    )))
+      setReiniciar(false)
+    }
+  }, [reiniciar, cartasiniciais])
 
   
   // const [virado, setVirado] = useState(false)
@@ -231,6 +245,10 @@ export default function Home() {
     }
   }
 
+  
+  const handleReiniciar = () => {
+    setReiniciar(true)
+  }
 
 
 return (
@@ -241,6 +259,12 @@ return (
       <h2 className="font-extrabold text-[#ffff] ">Pontuação</h2>
 
       {pontuacao === 8 ? pontuacao + ' parabens bb!' : pontuacao}
+    </div>
+
+    <div>
+      <button className="cursor-pointer absolute left-1 bottom-0 flex flex-col items-center -z-0 text-amber-950 active:text-amber-900 bg-[#aba37b] m-5 p-6 rounded-2xl font-bold" onClick={handleReiniciar}>
+        Reiniciar
+      </button>
     </div>
 
     <div className="h-fit w-fit absolute top-3 left-90 -z-1 bg-amber-950 grid grid-cols-4 grid-rows-4 gap-0 p-0 m-0 ">
