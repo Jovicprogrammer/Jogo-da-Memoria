@@ -5,7 +5,7 @@ Com esse pequeno projeto busquei criar um jogo da memória com alguns artistas q
 ## Conteúdo 
 
 - Cartas: 16 cartas diferentes com 8 pares para cada artista. Foram selecionados 8 artistas, sendo eles: Addison Rae, Caroline Polachek, Joji, Joey Valence and Brae, PinkPantheress, Quadeca, ROSALÍA e Sega Bodega.
-- Display de Pontuação: Um contador sempre adiciona + 1 ponto toda vez que um par é acertado. Ao chegar ao máximo (8) é exibe uma mensagem de parabéns.
+- Display de Pontuação: Um contador sempre adiciona + 1 ponto toda vez que um par é acertado. Ao chegar ao máximo (8) é exibido uma mensagem de parabéns.
 - Botão Reiniciar: Autoexplicativo. Desvira e embaralha novamente as cartas e zera a pontuação.
 
  ## Jogabilidade
