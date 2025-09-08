@@ -15,6 +15,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Jogo da Memória",
   description: "",
+  icons: {
+  icon: '/cartas/backgrouuuuund.jpg'
+  },
 };
 
 export default function RootLayout({
